@@ -1,0 +1,8 @@
+suppressPackageStartupMessages(library(edgeR))
+args<-commandArgs(trailingOnly=TRUE)
+x<-as.matrix(read.csv(gzfile(args[1]),row.names=1,check.names=FALSE))
+d<-calcNormFactors(DGEList(x))
+genes<-c("ITGA2B","ITGB3","GRAMD1C","DEFA3","ALOX15","PRSS33","PLXNB3")
+genes<-intersect(genes,rownames(x))
+write.csv(cpm(d,log=TRUE,prior.count=1)[genes,,drop=FALSE],args[2])
+write.csv(cpm(d,log=FALSE)[genes,,drop=FALSE],args[3])
